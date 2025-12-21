@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
 
-class AddExpense extends StatelessWidget {
-  AddExpense({super.key});
+class AddExpense extends StatefulWidget {
+  const AddExpense({super.key});
+
+  @override
+  State<AddExpense> createState() => _AddExpenseState();
+}
+
+class _AddExpenseState extends State<AddExpense> {
+
+  
+
 
   final List<Map<String, dynamic>> category = [
-    {
-      "categoryPic": "assets/travel.png",
-    },
-    {
-      "categoryPic": "assets/cup.png",
-    },
-    {
-      "categoryPic": "assets/popcorn.png",
-    },
-    {
-      "categoryPic": "assets/ambulance.png",
-    },
-    {
-      "categoryPic": "assets/mobile-transfer.png",
-    },
-    {
-      "categoryPic": "assets/laundry.png",
-    },
-    {
-      "categoryPic": "assets/life-insurance.png",
-    },
-    {
-      "categoryPic": "assets/restaurant.png"
-    },
+    {"categoryPic": "assets/travel.png"},
+    {"categoryPic": "assets/cup.png"},
+    {"categoryPic": "assets/popcorn.png"},
+    {"categoryPic": "assets/ambulance.png"},
+    {"categoryPic": "assets/mobile-transfer.png"},
+    {"categoryPic": "assets/laundry.png"},
+    {"categoryPic": "assets/life-insurance.png"},
+    {"categoryPic": "assets/restaurant.png"},
   ];
+
+  dynamic buttonNameOrPic;
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +43,14 @@ class AddExpense extends StatelessWidget {
             children: [
               commonSizedBox(50),
 
-              CommonTextField("Name your Expense", Icons.abc),
+              commonTextField("Name your Expense", Icons.abc,TextInputType.text,),
 
               commonSizedBox(50),
-              CommonTextField("Add Desc", Icons.abc),
+              commonTextField("Add Desc", Icons.abc,TextInputType.text),
 
               commonSizedBox(50),
 
-              CommonTextField("Enter Amount", Icons.money),
+              commonTextField("Enter Amount", Icons.money,TextInputType.number),
 
               commonSizedBox(50),
               DropdownButton(
@@ -68,83 +63,116 @@ class AddExpense extends StatelessWidget {
               ),
               commonSizedBox(50),
 
-              CommonElevatedButton(
-                "Choose Expense",
-                Colors.black,
+              commonElevatedButton(
+                buttonNameOrPic != null ? buttonNameOrPic : "Choose Expense",
+                buttonNameOrPic !=null ? Color(0xFFD1E5EE) : Colors.black,
                 Colors.white,
-                  (){
-                    showModalBottomSheet(
+                () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: GridView.builder(
+                          itemCount: category.length,
 
-                      context: context,
-                      builder: (context) {
-                        return Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                crossAxisCount: 4,
+                                mainAxisExtent: 82,
+                              ),
+                          itemBuilder: (context, index) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Color(0xFFD1E5EE),
+                              ),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 60,
+                                  width: 60,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      buttonNameOrPic = SizedBox(height: 35, width: 35,child: Image.asset(category[index]['categoryPic']));
 
-                            itemCount: category.length,
-
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                              crossAxisCount: 4,
-                              mainAxisExtent: 82,
-
-
-                            ),
-                            itemBuilder: (context, index){
-                              return Container(decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15), color: Color (0xFFD1E5EE),
-                              ),child: Center(child: SizedBox(height:60, width:60,child: IconButton(onPressed: (){}, icon: Image.asset(category[index]["categoryPic"])))),);
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  },
+                                      setState(() {});
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Image.asset(
+                                      category[index]["categoryPic"],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
               commonSizedBox(10),
 
-              CommonElevatedButton(
+              commonElevatedButton(
                 "December 14, 2023",
                 Colors.white,
                 Colors.black,
-                  (){
-                  showDatePicker(context: context, firstDate: DateTime(2000), lastDate: DateTime(2099));
-                  },
+                () {
+                  showDatePicker(
+                    context: context,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2099),
+                  );
+                },
               ),
               commonSizedBox(10),
-              CommonElevatedButton("ADD Expense", Colors.black, Colors.white, (){}),
+              commonElevatedButton(
+                "ADD Expense",
+                Colors.black,
+                Colors.white,
+                () {},
+              ),
             ],
           ),
         ),
+
       ),
     );
   }
 
-  Widget CommonElevatedButton(
-    String childText,
+  Widget commonElevatedButton(
+    buttonNameOrPic,
     Color backgroundColor,
     Color foregroundColor,
-      onPressedd,
+    onSelect,
   ) {
     return SizedBox(
+
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onPressedd,
+
+        onPressed: onSelect,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
         ),
-        child: Text(childText),
+        child: buttonNameOrPic is String ? Text(buttonNameOrPic) : buttonNameOrPic,
       ),
     );
   }
 
+
   Widget commonSizedBox(double height) => SizedBox(height: height);
 
-  Widget CommonTextField(String hintText, IconData iconData) {
+  Widget commonTextField(String hintText, IconData iconData, TextInputType) {
     return TextField(
+      keyboardType: TextInputType,
+
       decoration: InputDecoration(
+
         hintText: hintText,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
         suffixIcon: Icon(iconData),
