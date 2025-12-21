@@ -167,9 +167,9 @@ class _AddExpenseState extends State<AddExpense> {
 
   Widget commonSizedBox(double height) => SizedBox(height: height);
 
-  Widget commonTextField(String hintText, IconData iconData, TextInputType) {
+  Widget commonTextField(String hintText, IconData iconData, textInputTypeOfKeyBoard) {
     return TextField(
-      keyboardType: TextInputType,
+      keyboardType: textInputTypeOfKeyBoard,
 
       decoration: InputDecoration(
 
