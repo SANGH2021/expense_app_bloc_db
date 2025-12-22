@@ -67,6 +67,12 @@ flutter:
     - assets/popcorn.png
     - assets/restaurant.png
     - assets/travel.png
+    - assets/electricity-bill.png
+    - assets/education.png
+    - assets/piggy-bank.png
+    - assets/other.png
+    - assets/salary.png
+    - assets/loan.png
 
   #   - images/a_dot_ham.jpeg
 

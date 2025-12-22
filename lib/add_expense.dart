@@ -1,3 +1,4 @@
+import 'package:expense_app_bloc_db/app_constants.dart';
 import 'package:flutter/material.dart';
 
 class AddExpense extends StatefulWidget {
@@ -8,22 +9,9 @@ class AddExpense extends StatefulWidget {
 }
 
 class _AddExpenseState extends State<AddExpense> {
-
-  
-
-
-  final List<Map<String, dynamic>> category = [
-    {"categoryPic": "assets/travel.png"},
-    {"categoryPic": "assets/cup.png"},
-    {"categoryPic": "assets/popcorn.png"},
-    {"categoryPic": "assets/ambulance.png"},
-    {"categoryPic": "assets/mobile-transfer.png"},
-    {"categoryPic": "assets/laundry.png"},
-    {"categoryPic": "assets/life-insurance.png"},
-    {"categoryPic": "assets/restaurant.png"},
-  ];
-
   dynamic buttonNameOrPic;
+
+  int categoryTappableId = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +31,22 @@ class _AddExpenseState extends State<AddExpense> {
             children: [
               commonSizedBox(50),
 
-              commonTextField("Name your Expense", Icons.abc,TextInputType.text,),
+              commonTextField(
+                "Name your Expense",
+                Icons.abc,
+                TextInputType.text,
+              ),
 
               commonSizedBox(50),
-              commonTextField("Add Desc", Icons.abc,TextInputType.text),
+              commonTextField("Add Desc", Icons.abc, TextInputType.text),
 
               commonSizedBox(50),
 
-              commonTextField("Enter Amount", Icons.money,TextInputType.number),
+              commonTextField(
+                "Enter Amount",
+                Icons.money,
+                TextInputType.number,
+              ),
 
               commonSizedBox(50),
               DropdownButton(
@@ -64,17 +60,26 @@ class _AddExpenseState extends State<AddExpense> {
               commonSizedBox(50),
 
               commonElevatedButton(
-                buttonNameOrPic != null ? buttonNameOrPic : "Choose Expense",
-                buttonNameOrPic !=null ? Color(0xFFD1E5EE) : Colors.black,
-                Colors.white,
-                () {
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                childWidget: categoryTappableId == -1
+                    ? Text("Choose Expense")
+                    : SizedBox(height:  35, width: 35,
+                      child: Image.asset(
+                          AppConstants
+                              .constantCategories[categoryTappableId]
+                              .categoryImagePath,
+                        ),
+                    ) ,
+
+                onSelect: () {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) {
                       return Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: GridView.builder(
-                          itemCount: category.length,
+                          itemCount: AppConstants.constantCategories.length,
 
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -95,13 +100,19 @@ class _AddExpenseState extends State<AddExpense> {
                                   width: 60,
                                   child: IconButton(
                                     onPressed: () {
-                                      buttonNameOrPic = SizedBox(height: 35, width: 35,child: Image.asset(category[index]['categoryPic']));
+                                      categoryTappableId = index;
 
-                                      setState(() {});
+
+
+                                      setState(() {
+
+                                      });
                                       Navigator.pop(context);
                                     },
                                     icon: Image.asset(
-                                      category[index]["categoryPic"],
+                                      AppConstants
+                                          .constantCategories[index]
+                                          .categoryImagePath,
                                     ),
                                   ),
                                 ),
@@ -117,10 +128,10 @@ class _AddExpenseState extends State<AddExpense> {
               commonSizedBox(10),
 
               commonElevatedButton(
-                "December 14, 2023",
-                Colors.white,
-                Colors.black,
-                () {
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.black,
+                childWidget: Text("December 14, 2023"),
+                onSelect: () {
                   showDatePicker(
                     context: context,
                     firstDate: DateTime(2000),
@@ -130,49 +141,48 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               commonSizedBox(10),
               commonElevatedButton(
-                "ADD Expense",
-                Colors.black,
-                Colors.white,
-                () {},
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                childWidget: Text("ADD Expense"),
+                onSelect: () {},
               ),
             ],
           ),
         ),
-
       ),
     );
   }
 
-  Widget commonElevatedButton(
-    buttonNameOrPic,
-    Color backgroundColor,
-    Color foregroundColor,
-    onSelect,
-  ) {
+  Widget commonElevatedButton({
+    required Color backgroundColor,
+    required Color foregroundColor,
+    required VoidCallback onSelect,
+    required Widget childWidget,
+  }) {
     return SizedBox(
-
       width: double.infinity,
       child: ElevatedButton(
-
         onPressed: onSelect,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
         ),
-        child: buttonNameOrPic is String ? Text(buttonNameOrPic) : buttonNameOrPic,
+        child: childWidget,
       ),
     );
   }
 
-
   Widget commonSizedBox(double height) => SizedBox(height: height);
 
-  Widget commonTextField(String hintText, IconData iconData, textInputTypeOfKeyBoard) {
+  Widget commonTextField(
+    String hintText,
+    IconData iconData,
+    textInputTypeOfKeyBoard,
+  ) {
     return TextField(
       keyboardType: textInputTypeOfKeyBoard,
 
       decoration: InputDecoration(
-
         hintText: hintText,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
         suffixIcon: Icon(iconData),
