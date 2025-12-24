@@ -22,21 +22,4 @@ class AppConstants {
 
   ];
 
-  // final List<Map<String, dynamic>> category = [
-  //   {"categoryPic": "assets/travel.png"},
-  //   {"categoryPic": "assets/cup.png"},
-  //   {"categoryPic": "assets/popcorn.png"},
-  //   {"categoryPic": "assets/ambulance.png"},
-  //   {"categoryPic": "assets/mobile-transfer.png"},
-  //   {"categoryPic": "assets/laundry.png"},
-  //   {"categoryPic": "assets/life-insurance.png"},
-  //   {"categoryPic": "assets/restaurant.png"},
-  //   {"categoryPic" : "assets/electricity-bill.png"},
-  //   {"categoryPic" : "assets/education.png"},
-  //   {"categoryPic" : "assets/piggy-bank.png"},
-  //   {"categoryPic" : "assets/other.png"},
-  //   {"categoryPic" : "assets/salary.png"},
-  //   {"categoryPic": "assets/loan.png"}
-  // ];
-
 }
